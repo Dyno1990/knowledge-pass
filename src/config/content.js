@@ -1,0 +1,26 @@
+export const content = {
+  en: {
+    brand: 'Knowledge Pass', eyebrow: 'Security essentials', title: 'Think clearly.\nChoose securely.', subtitle: 'Ten practical questions. Instant feedback. One certificate that proves you know the essentials.',
+    start: 'Start assessment', about: 'About us', quiz: 'Assessment', contact: 'Contact', terms: 'Terms & conditions', copyright: '© 2026 Knowledge Pass. All rights reserved.',
+    aboutTitle: 'Knowledge that changes behaviour.', aboutText: 'We turn essential workplace knowledge into focused, memorable learning experiences — without the noise.',
+    contactTitle: 'Let’s talk learning.', contactText: 'Questions about the assessment or a team rollout?', contactEmail: 'hello@knowledgepass.example',
+    question: 'Question', of: 'of', remaining: 'remaining', choose: 'Choose one answer', check: 'Check answer', next: 'Next question', finish: 'Complete assessment', correct: 'That’s right', correctText: 'You can continue when you’re ready.',
+    notQuite: 'Not quite yet', understand: 'Got it — try again', yourAnswer: 'Your answer', explanation: 'Why this matters',
+    completeEyebrow: 'Assessment complete', completeTitle: 'Excellent work.', completeText: 'You answered every question correctly. Add your details and we’ll prepare your certificate.',
+    name: 'Full name', email: 'Email address', namePlaceholder: 'Your name', emailPlaceholder: 'you@example.com', send: 'Create & send certificate', sending: 'Preparing certificate…', privacy: 'Your email is used only to deliver this certificate.',
+    sentTitle: 'Certificate ready', sentText: 'Your certificate has been prepared', download: 'Download certificate', restart: 'Take the test again', close: 'Close', menu: 'Open menu', language: 'Language', changeLanguage: 'Change language', required: 'Please enter a valid name and email.', serverError: 'The certificate was created, but email delivery is not configured. You can download it below.',
+    certificate: 'CERTIFICATE', certificateOf: 'OF ACHIEVEMENT', certifies: 'This certifies that', completed: 'has successfully completed the', assessmentName: 'Information Security Essentials Assessment', date: 'Issued', score: 'Score', director: 'Programme Director', certificateId: 'Certificate ID',
+  },
+  bg: {
+    brand: 'Knowledge Pass', eyebrow: 'Основи на сигурността', title: 'Мисли ясно.\nИзбирай сигурно.', subtitle: 'Десет практични въпроса. Незабавна обратна връзка. Един сертификат, който доказва знанията ти.',
+    start: 'Започни теста', about: 'За нас', quiz: 'Въпросник', contact: 'Контакти', terms: 'Общи условия', copyright: '© 2026 Knowledge Pass. Всички права запазени.',
+    aboutTitle: 'Знание, което променя поведението.', aboutText: 'Превръщаме важните знания за работното място във фокусирано и запомнящо се обучение — без излишен шум.',
+    contactTitle: 'Да поговорим за обучение.', contactText: 'Въпроси за теста или внедряване за целия екип?', contactEmail: 'hello@knowledgepass.example',
+    question: 'Въпрос', of: 'от', remaining: 'остават', choose: 'Изберете един отговор', check: 'Провери отговора', next: 'Следващ въпрос', finish: 'Завърши теста', correct: 'Точно така', correctText: 'Продължете, когато сте готови.',
+    notQuite: 'Не съвсем', understand: 'Разбрах — опитай пак', yourAnswer: 'Вашият отговор', explanation: 'Защо това е важно',
+    completeEyebrow: 'Тестът е завършен', completeTitle: 'Отлична работа.', completeText: 'Отговорихте правилно на всички въпроси. Добавете данните си и ще подготвим сертификата.',
+    name: 'Име и фамилия', email: 'Имейл адрес', namePlaceholder: 'Вашето име', emailPlaceholder: 'you@example.com', send: 'Създай и изпрати сертификата', sending: 'Подготвяме сертификата…', privacy: 'Имейлът се използва единствено за изпращане на сертификата.',
+    sentTitle: 'Сертификатът е готов', sentText: 'Вашият сертификат беше подготвен', download: 'Изтегли сертификата', restart: 'Направи теста отново', close: 'Затвори', menu: 'Отвори менюто', language: 'Език', changeLanguage: 'Смени езика', required: 'Моля, въведете валидно име и имейл.', serverError: 'Сертификатът е създаден, но изпращането по имейл не е настроено. Можете да го изтеглите отдолу.',
+    certificate: 'СЕРТИФИКАТ', certificateOf: 'ЗА ПОСТИЖЕНИЕ', certifies: 'С настоящото удостоверяваме, че', completed: 'успешно завърши', assessmentName: 'Тест „Основи на информационната сигурност“', date: 'Издаден на', score: 'Резултат', director: 'Програмен директор', certificateId: 'Номер на сертификат',
+  },
+};
