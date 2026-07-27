@@ -46,10 +46,11 @@ export const questions = [
   },
   {
     id: 7,
-    text: { en: 'Which backup strategy is generally recommended?', bg: 'Коя стратегия за архивиране обикновено се препоръчва?' },
-    options: { en: ['One copy on your laptop', 'The 3-2-1 rule', 'No backup for cloud files', 'A yearly USB copy only'], bg: ['Едно копие на лаптопа', 'Правилото 3-2-1', 'Без архив за облачни файлове', 'Само едно годишно копие на USB'] },
-    correct: 1,
-    explanation: { en: 'The 3-2-1 rule means three copies, on two media types, with one copy stored off-site.', bg: 'Правилото 3-2-1 означава три копия, на два вида носители, като едно е на друго място.' },
+    text: { en: 'Which practices support a resilient backup strategy? (Select all that apply)', bg: 'Кои практики изграждат надеждна стратегия за архивиране? (Изберете всички верни)' },
+    options: { en: ['Keep multiple copies', 'Use more than one type of storage', 'Keep one copy off-site', 'Rely on one yearly USB copy'], bg: ['Поддържайте няколко копия', 'Използвайте повече от един вид носител', 'Пазете едно копие на друго място', 'Разчитайте на едно годишно USB копие'] },
+    correct: [0, 1, 2],
+    explanation: { en: 'The 3-2-1 rule combines three copies, two media types, and one off-site copy.', bg: 'Правилото 3-2-1 комбинира три копия, два вида носители и едно копие на друго място.' },
+    wrongAnswerGuidance: { en: 'Select every practice represented in the 3-2-1 backup rule.', bg: 'Изберете всяка практика, включена в правилото 3-2-1.' },
   },
   {
     id: 8,

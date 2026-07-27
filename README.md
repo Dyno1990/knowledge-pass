@@ -59,7 +59,17 @@ knowledge-pass/
 │   ├── styles.css
 │   └── config/
 │       ├── content.js
-│       └── questions.js
+│       ├── questions.js
+│       └── quizzes/
+│           ├── index.js
+│           ├── security-essentials.js
+│           ├── phishing-awareness.js
+│           ├── data-protection.js
+│           ├── device-security.js
+│           ├── incident-response.js
+│           ├── module-template.js
+│           ├── validate.js
+│           └── CONFIGURATION.md
 ├── outputs/
 │   └── certificates/
 ├── dist/                  # Created by npm run build
@@ -123,7 +133,7 @@ The design tokens are declared as CSS custom properties at the beginning of the 
 
 ### `src/config/questions.js`
 
-Exports the `questions` array used by the assessment. The application derives the total question count, remaining count, and progress directly from this array, so no separate total needs to be updated.
+Exports the original ten-question Security Essentials question set, which is consumed by `quizzes/security-essentials.js`.
 
 Each question follows this structure:
 
@@ -148,7 +158,28 @@ Each question follows this structure:
 
 `correct` is the zero-based index of the correct option. In the example above, `1` means the second option.
 
-To add a question, append another object with a unique `id`. To remove a question, remove its object. The UI updates its counters and progress automatically.
+For a question with multiple correct answers, use an array of zero-based indexes:
+
+```js
+correct: [0, 1, 3]
+```
+
+This marks the first, second, and fourth options as correct. The learner must select the exact set. See `src/config/quizzes/module-template.js` for complete single- and multiple-answer examples and `src/config/quizzes/CONFIGURATION.md` for the authoring guide.
+
+### `src/config/quizzes/`
+
+Contains one independent configuration file per assessment module. Every module defines a stable `id`, display order, bilingual title and description, estimated duration, and its own questions array.
+
+`quizzes/index.js` is the shared catalog imported by both React and Express. It exports:
+
+- `quizzes` — ordered module configurations
+- `quizCount` — calculated with `quizzes.length`
+- `totalQuestionCount` — calculated across all module question arrays
+- `getQuizById(quizId)` — shared module lookup
+
+Adding or removing an imported configuration in this catalog automatically updates the frontend module count, total question count, module selector, health response, and quiz API. Question progress is calculated from the selected module's own array.
+
+`quizzes/validate.js` validates the full catalog as soon as it is imported. It rejects duplicate module or question IDs, missing translations, mismatched answer counts, empty options, duplicate correct indexes, and indexes outside the answer list with a precise configuration path.
 
 ### `src/config/content.js`
 
@@ -174,6 +205,8 @@ Contains the complete backend service:
 - CORS configuration
 - Static certificate hosting
 - Health endpoint
+- Quiz catalog and public quiz detail endpoints
+- Server-side answer validation without exposing correct answers in quiz details
 - Certificate request validation
 - Unique certificate ID generation
 - Bilingual PDF certificate generation
@@ -211,6 +244,63 @@ http://localhost:3001
 
 During frontend development, requests should use relative paths such as `/api/certificates`; Vite forwards them to the API server.
 
+### List Quiz Modules
+
+```http
+GET /api/quizzes
+```
+
+Returns `moduleCount`, `totalQuestionCount`, and localized metadata for every configured module. Both totals are derived from the shared configuration catalog.
+
+### Get Quiz Module
+
+```http
+GET /api/quizzes/:quizId
+```
+
+Returns one module and its public questions. Correct answer indexes and explanations are intentionally omitted.
+
+### Validate Quiz Answer
+
+```http
+POST /api/quizzes/:quizId/answers
+```
+
+Example body:
+
+```json
+{
+  "questionId": 1,
+  "answerIndex": 2,
+  "language": "bg"
+}
+```
+
+Returns whether the answer is correct and, for an incorrect answer, the localized explanation.
+
+### Figma Make Module API
+
+The backend also exposes aliases matching the terminology and data model used by the connected Figma Make project:
+
+```http
+GET  /api/modules?language=en
+GET  /api/modules/:moduleId?language=bg
+POST /api/modules/:moduleId/questions/:questionId/check
+```
+
+Module responses include `titleKey`, `descriptionKey`, `icon`, `color`, `questionCount`, and questions containing `answers` with stable `a1`, `a2`, etc. identifiers. Correct-answer flags are never included in public module responses.
+
+Single- and multiple-answer questions use the same validation request:
+
+```json
+{
+  "answerIds": ["a1", "a2", "a3"],
+  "language": "en"
+}
+```
+
+For multi-select questions, the submitted set must exactly match the configured correct-answer set. A response includes the educational explanation for every attempt and `wrongAnswerGuidance` when the answer is incorrect.
+
 ### Create Certificate
 
 Creates a personalized PDF certificate and sends it by email when SMTP is configured.
@@ -237,9 +327,10 @@ Request body:
 {
   "name": "Ivan Petrov",
   "email": "ivan@example.com",
+  "quizId": "phishing-awareness",
   "language": "en",
-  "score": 10,
-  "total": 10
+  "score": 5,
+  "total": 5
 }
 ```
 
@@ -249,15 +340,17 @@ Request fields:
 | --- | --- | --- | --- |
 | `name` | string | Yes | Learner name printed on the certificate; 2-100 characters. |
 | `email` | string | Yes | Recipient address used for certificate delivery. |
+| `quizId` | string | Yes | ID of the configured module being certified. |
 | `language` | string | Yes | Certificate language: `en` or `bg`. |
-| `score` | integer | Yes | Number of correctly completed questions. |
-| `total` | integer | Yes | Total number of questions. `score` must equal `total`. |
+| `score` | integer | Yes | Must equal the selected module's configured question count. |
+| `total` | integer | Yes | Must equal the selected module's configured question count. |
 
 Successful response: `201 Created`
 
 ```json
 {
   "certificateId": "KP-2026-FF678E3B",
+  "quizId": "phishing-awareness",
   "emailSent": false,
   "downloadUrl": "/certificates/KP-2026-FF678E3B.pdf"
 }
@@ -293,7 +386,8 @@ Example response:
 ```json
 {
   "ok": true,
-  "mailConfigured": false
+  "mailConfigured": false,
+  "moduleCount": 5
 }
 ```
 
