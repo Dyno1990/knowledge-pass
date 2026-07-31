@@ -1,7 +1,7 @@
 import { Menu, X, Home, Award, FileText, Info, Mail, Globe } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
-import { modules } from "../data/modules";
+import { localize, modules } from "../data/modules";
 import { useLanguage, Language } from "../contexts/LanguageContext";
 import { useTranslation } from "../hooks/useTranslation";
 
@@ -79,7 +79,7 @@ export default function Header() {
                       onClick={() => setIsModulesOpen(false)}
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
                     >
-                      {t(module.titleKey as any)}
+                      {localize(module.title, language)}
                     </Link>
                   ))}
                 </div>
@@ -176,7 +176,7 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className="pl-6 pr-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
                 >
-                  {t(module.titleKey as any)}
+                  {localize(module.title, language)}
                 </Link>
               ))}
 

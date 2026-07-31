@@ -1,5 +1,5 @@
 import { useParams, Link, useLocation } from "react-router";
-import { modules } from "../data/modules";
+import { localize, modules } from "../data/modules";
 import { Award, Download, Home, Share2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
@@ -96,7 +96,7 @@ export default function CertificatePage() {
               <p className="text-lg text-gray-600 mb-4">
                 {language === "bg" ? "успешно завърши" : "has successfully completed the"}
               </p>
-              <p className="text-2xl font-bold text-blue-600 mb-6">{t(module.titleKey as any)}</p>
+              <p className="text-2xl font-bold text-blue-600 mb-6">{localize(module.title, language)}</p>
               <p className="text-lg text-gray-600">{language === "bg" ? "Сертификационна програма" : "Certification Program"}</p>
             </div>
 

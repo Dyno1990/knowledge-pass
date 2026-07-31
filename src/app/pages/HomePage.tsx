@@ -1,26 +1,19 @@
 import { Link } from "react-router";
-import { modules } from "../data/modules";
+import { localize, modules } from "../data/modules";
 import * as Icons from "lucide-react";
 import { useTranslation } from "../hooks/useTranslation";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Whistle: Icons.Dumbbell,
+  Dumbbell: Icons.Dumbbell,
+  Whistle: Icons.ClipboardCheck,
   Flag: Icons.Flag,
   Heart: Icons.Heart,
   Briefcase: Icons.Briefcase,
   BarChart3: Icons.BarChart3,
 };
 
-const moduleColors: Record<string, string> = {
-  coach: "#3b82f6",
-  referee: "#22c55e",
-  trainer: "#ef4444",
-  manager: "#a855f7",
-  analyst: "#f97316",
-};
-
 export default function HomePage() {
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -45,13 +38,13 @@ export default function HomePage() {
               >
                 <div
                   className="h-32 flex items-center justify-center"
-                  style={{ backgroundColor: moduleColors[module.id], color: "#ffffff" }}
+                  style={{ backgroundColor: module.color, color: "#ffffff" }}
                 >
                   {Icon && <Icon className="w-16 h-16 text-white" />}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{t(module.titleKey as any)}</h3>
-                  <p className="text-gray-600 mb-4">{t(module.descriptionKey as any)}</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{localize(module.title, language)}</h3>
+                  <p className="text-gray-600 mb-4">{localize(module.description, language)}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">
                       {module.questions.length} {t('questions')}

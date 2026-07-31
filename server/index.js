@@ -78,11 +78,11 @@ const modulePresentation = {
 };
 
 const sportsModules = {
-  coach: { title: { en: 'Sports Coach', bg: 'Спортен треньор' }, questionCount: 10 },
-  referee: { title: { en: 'Sports Referee', bg: 'Спортен съдия' }, questionCount: 10 },
-  trainer: { title: { en: 'Athletic Trainer', bg: 'Атлетически треньор' }, questionCount: 10 },
-  manager: { title: { en: 'Sports Manager', bg: 'Спортен мениджър' }, questionCount: 10 },
-  analyst: { title: { en: 'Sports Analyst', bg: 'Спортен анализатор' }, questionCount: 10 },
+  athlete: { title: { en: 'e-Athlete', bg: 'е-Атлет' }, questionCount: 10 },
+  coach: { title: { en: 'e-Coach', bg: 'е-Треньор' }, questionCount: 10 },
+  referee: { title: { en: 'e-Referee', bg: 'е-Съдия' }, questionCount: 10 },
+  volunteer: { title: { en: 'e-Volunteer', bg: 'е-Доброволец' }, questionCount: 10 },
+  administrator: { title: { en: 'e-Administrator', bg: 'е-Администратор' }, questionCount: 10 },
 };
 
 const selectedLanguage = (value) => ['en', 'bg'].includes(value) ? value : null;
