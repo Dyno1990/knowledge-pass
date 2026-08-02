@@ -1,4 +1,4 @@
-# WTSB Certificate Issuance Platform
+# WTSB Digital Modules
 
 A bilingual React and Express platform with five role-based learning modules, retry-until-correct quizzes, dynamic progress, PDF certificate generation, and optional certificate delivery by email.
 

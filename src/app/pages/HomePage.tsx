@@ -6,6 +6,7 @@ import { useTranslation } from "../hooks/useTranslation";
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Dumbbell: Icons.Dumbbell,
   Whistle: Icons.ClipboardCheck,
+  ClipboardCheck: Icons.ClipboardCheck,
   Flag: Icons.Flag,
   Heart: Icons.Heart,
   Briefcase: Icons.Briefcase,
@@ -28,7 +29,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {modules.map((module) => {
-            const Icon = iconMap[module.icon];
+            const Icon = iconMap[module.icon] ?? Icons.Award;
             return (
               <Link
                 key={module.id}
@@ -40,7 +41,7 @@ export default function HomePage() {
                   className="h-32 flex items-center justify-center"
                   style={{ backgroundColor: module.color, color: "#ffffff" }}
                 >
-                  {Icon && <Icon className="w-16 h-16 text-white" />}
+                  <Icon className="w-16 h-16 text-white" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{localize(module.title, language)}</h3>

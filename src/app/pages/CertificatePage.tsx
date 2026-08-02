@@ -115,7 +115,7 @@ export default function CertificatePage() {
 
             <div className="pt-8 border-t border-gray-200">
               <p className="text-sm text-gray-500">
-                Sports Certification Platform
+                WTSB Digital Modules
               </p>
             </div>
           </div>
