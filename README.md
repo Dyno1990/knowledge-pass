@@ -86,9 +86,8 @@ An incorrect answer opens a popup with the detailed explanation and key message,
 - `GET /api/modules/:moduleId`
 - `POST /api/modules/:moduleId/questions/:questionId/check`
 - `POST /api/certificates`
-- `GET /certificates/:filename`
 
-The frontend currently validates the locally configured question answers. `POST /api/certificates` generates the final PDF and sends it when SMTP is configured.
+The frontend currently validates the locally configured question answers. `POST /api/certificates` generates the final PDF in memory, returns it as a downloadable data URL, and sends it when SMTP is configured. No persistent server filesystem is required.
 
 ## Email configuration
 
@@ -112,4 +111,33 @@ npm run build
 npm run preview
 ```
 
-Generated PDFs are stored in `outputs/certificates/`.
+## Deploying to Vercel
+
+The repository includes `api/index.js` as the Vercel Function entry point and `vercel.json` for API and single-page application routing.
+
+Import the GitHub repository into Vercel and use:
+
+```text
+Framework Preset: Vite
+Root Directory: ./
+Install Command: npm install
+Build Command: npm run build
+Output Directory: dist
+Node.js Version: 22.x
+```
+
+Add the following Production, Preview, and Development environment variables in **Project Settings → Environment Variables**:
+
+```env
+APP_URL=https://your-project.vercel.app
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-user
+SMTP_PASS=your-password
+MAIL_FROM="WTSB Digital Modules <certificates@example.com>"
+```
+
+`PORT` is not needed on Vercel. The address in `MAIL_FROM` is the sender shown to learners and usually must be verified by the SMTP provider. `SMTP_USER` is the SMTP login and can be a different value.
+
+Without SMTP variables, the PDF can still be generated and downloaded, but it will not be emailed.

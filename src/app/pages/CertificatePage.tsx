@@ -78,25 +78,30 @@ export default function CertificatePage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-2xl p-12 mb-8 border-8 border-yellow-400">
-          <div className="text-center">
+        <div className="relative overflow-hidden bg-gradient-to-br from-white to-blue-50 rounded-xl shadow-2xl p-12 mb-8 border-8 border-blue-900 outline outline-2 outline-offset-[-14px] outline-blue-300">
+          <div className="absolute -left-20 -bottom-20 w-64 h-64 rounded-full border-[18px] border-blue-200/30" />
+          <div className="absolute -right-12 top-20 w-36 h-36 rounded-full border-[12px] border-indigo-200/25" />
+          <div className="relative text-center">
             <div className="mb-8">
-              <Award className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+              <div className="w-16 h-16 rounded-full bg-blue-900 text-white flex items-center justify-center mx-auto mb-4 shadow-md">
+                <span className="font-bold tracking-wider">WTSB</span>
+              </div>
+              <p className="text-sm font-bold tracking-[0.25em] text-blue-800 mb-3">WTSB DIGITAL MODULES</p>
               <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">
                 {t("certificateOfAchievement")}
               </h2>
-              <div className="w-24 h-1 bg-yellow-500 mx-auto" />
+              <div className="w-24 h-1 bg-blue-500 mx-auto" />
             </div>
 
             <div className="mb-8">
               <p className="text-lg text-gray-600 mb-4">{language === "bg" ? "С настоящото удостоверяваме, че" : "This certifies that"}</p>
-              <div className="bg-gray-50 rounded-lg py-4 px-8 inline-block mb-4">
+              <div className="bg-white/80 border border-blue-100 rounded-lg py-4 px-8 inline-block mb-4 shadow-sm">
                 <p className="text-3xl font-bold text-gray-900">{certificate.name || (language === "bg" ? "Спортен професионалист" : "Sports Professional")}</p>
               </div>
               <p className="text-lg text-gray-600 mb-4">
                 {language === "bg" ? "успешно завърши" : "has successfully completed the"}
               </p>
-              <p className="text-2xl font-bold text-blue-600 mb-6">{localize(module.title, language)}</p>
+              <p className="text-2xl font-bold text-blue-600 mb-6">{localize(module.title, language)} Digital Module</p>
               <p className="text-lg text-gray-600">{language === "bg" ? "Сертификационна програма" : "Certification Program"}</p>
             </div>
 
