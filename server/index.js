@@ -138,9 +138,26 @@ function createCertificate({ name, language, score, total, id, assessment }) {
   });
 }
 
+const gmailOAuthConfigured = () => [
+  process.env.GMAIL_USER,
+  process.env.GMAIL_CLIENT_ID,
+  process.env.GMAIL_CLIENT_SECRET,
+  process.env.GMAIL_REFRESH_TOKEN,
+].every(Boolean);
+
 function mailTransport() {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) return null;
-  return nodemailer.createTransport({ host: process.env.SMTP_HOST, port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } });
+  if (!gmailOAuthConfigured()) return null;
+
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: process.env.GMAIL_USER,
+      clientId: process.env.GMAIL_CLIENT_ID,
+      clientSecret: process.env.GMAIL_CLIENT_SECRET,
+      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+    },
+  });
 }
 
 const modulePresentation = {
@@ -188,7 +205,7 @@ const publicQuiz = (quiz, language = null) => ({
   })),
 });
 
-app.get('/api/health', (_req, res) => res.json({ ok: true, mailConfigured: Boolean(mailTransport()), moduleCount: quizCount }));
+app.get('/api/health', (_req, res) => res.json({ ok: true, mailConfigured: gmailOAuthConfigured(), moduleCount: quizCount }));
 
 app.get('/api/quizzes', (req, res) => {
   const language = selectedLanguage(req.query.language);
@@ -272,7 +289,7 @@ app.post('/api/certificates', async (req, res) => {
       const subject = language === 'bg' ? `Вашият сертификат за „${bgTitle}“` : `Your ${enTitle} certificate`;
       const message = language === 'bg' ? `Здравейте, ${name.trim()},\n\nПоздравления за успешно завършения модул „${bgTitle}“. Сертификатът ви е прикачен към този имейл.` : `Hello ${name.trim()},\n\nCongratulations on completing “${enTitle}”. Your certificate is attached to this email.`;
       await transport.sendMail({
-        from: process.env.MAIL_FROM || process.env.SMTP_USER,
+        from: process.env.MAIL_FROM || process.env.GMAIL_USER,
         to: email,
         subject,
         text: message,
