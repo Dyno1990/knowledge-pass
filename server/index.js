@@ -145,19 +145,45 @@ const gmailOAuthConfigured = () => [
   process.env.GMAIL_REFRESH_TOKEN,
 ].every(Boolean);
 
-function mailTransport() {
-  if (!gmailOAuthConfigured()) return null;
-
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: process.env.GMAIL_USER,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-    },
+async function gmailAccessToken() {
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: process.env.GMAIL_CLIENT_ID,
+      client_secret: process.env.GMAIL_CLIENT_SECRET,
+      refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+      grant_type: 'refresh_token',
+    }),
   });
+  const payload = await response.json();
+  if (!response.ok || !payload.access_token) {
+    throw new Error(`Gmail OAuth token request failed (${response.status}): ${payload.error || 'unknown_error'}`);
+  }
+  return payload.access_token;
+}
+
+async function sendGmailMessage(messageOptions) {
+  const mimeTransport = nodemailer.createTransport({
+    streamTransport: true,
+    buffer: true,
+    newline: 'unix',
+  });
+  const { message } = await mimeTransport.sendMail(messageOptions);
+  const accessToken = await gmailAccessToken();
+  const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ raw: Buffer.from(message).toString('base64url') }),
+  });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(`Gmail API send failed (${response.status}): ${payload.error?.message || 'unknown_error'}`);
+  }
+  return response.json();
 }
 
 const modulePresentation = {
@@ -282,13 +308,13 @@ app.post('/api/certificates', async (req, res) => {
   const filename = `${id}.pdf`;
   try {
     const pdfBuffer = await createCertificate({ name: name.trim(), language, score, total, id, assessment: assessmentTitle });
-    const transport = mailTransport(); let emailSent = false;
-    if (transport) {
+    let emailSent = false;
+    if (gmailOAuthConfigured()) {
       const bgTitle = quiz?.title?.bg || sportsModule.title.bg;
       const enTitle = quiz?.title?.en || sportsModule.title.en;
       const subject = language === 'bg' ? `Вашият сертификат за „${bgTitle}“` : `Your ${enTitle} certificate`;
       const message = language === 'bg' ? `Здравейте, ${name.trim()},\n\nПоздравления за успешно завършения модул „${bgTitle}“. Сертификатът ви е прикачен към този имейл.` : `Hello ${name.trim()},\n\nCongratulations on completing “${enTitle}”. Your certificate is attached to this email.`;
-      await transport.sendMail({
+      await sendGmailMessage({
         from: process.env.MAIL_FROM || process.env.GMAIL_USER,
         to: email,
         subject,

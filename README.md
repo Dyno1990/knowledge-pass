@@ -103,7 +103,7 @@ MAIL_FROM="WTSB Digital Modules <certificates@your-domain.com>"
 
 The Google Cloud project must have the Gmail API enabled and must authorize the `https://www.googleapis.com/auth/gmail.send` scope. Create an OAuth client and obtain the refresh token by authorizing the mailbox with offline access.
 
-The access token expires after approximately one hour. Nodemailer uses `GMAIL_REFRESH_TOKEN`, `GMAIL_CLIENT_ID`, and `GMAIL_CLIENT_SECRET` to request a new access token automatically; an access token must not be stored in Vercel. A refresh token normally remains valid until it is revoked, the OAuth client is removed, or an applicable Google Workspace policy expires it. Keep an Internal Workspace app out of External Testing mode to avoid short-lived testing credentials.
+The backend sends through the Gmail API using the `https://www.googleapis.com/auth/gmail.send` scope. It uses `GMAIL_REFRESH_TOKEN`, `GMAIL_CLIENT_ID`, and `GMAIL_CLIENT_SECRET` to request a new short-lived access token automatically; an access token must not be stored in Vercel. A refresh token normally remains valid until it is revoked, the OAuth client is removed, or an applicable Google Workspace policy expires it. Keep an Internal Workspace app out of External Testing mode to avoid short-lived testing credentials.
 
 The address in `MAIL_FROM` should match `GMAIL_USER` unless the Google Workspace account has an authorized sender alias. Do not commit the real `.env` file or any OAuth credential.
 
