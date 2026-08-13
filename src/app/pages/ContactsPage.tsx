@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Send } from "lucide-react";
 
 export default function ContactsPage() {
   return (
@@ -15,32 +15,18 @@ export default function ContactsPage() {
             through any of the methods below.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="max-w-md mx-auto mb-12">
             <div className="bg-blue-50 rounded-lg p-6 text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Email</h3>
-              <p className="text-gray-700">info@sportscertification.com</p>
-              <p className="text-gray-700">support@sportscertification.com</p>
-            </div>
-
-            <div className="bg-green-50 rounded-lg p-6 text-center">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Phone</h3>
-              <p className="text-gray-700">+1 (555) 123-4567</p>
-              <p className="text-sm text-gray-600 mt-2">Mon-Fri, 9AM-5PM EST</p>
-            </div>
-
-            <div className="bg-purple-50 rounded-lg p-6 text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Address</h3>
-              <p className="text-gray-700">123 Sports Avenue</p>
-              <p className="text-gray-700">Athletic City, AC 12345</p>
+              <a
+                href="mailto:wtsbdigitalmodules@gmail.com"
+                className="text-gray-700 hover:text-blue-600 transition-colors break-all"
+              >
+                wtsbdigitalmodules@gmail.com
+              </a>
             </div>
           </div>
 
@@ -132,15 +118,6 @@ export default function ContactsPage() {
                 <p className="text-gray-700">
                   Yes! You can retake any certification program at any time to refresh your knowledge
                   or improve your understanding.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Will you add more certification programs?
-                </h3>
-                <p className="text-gray-700">
-                  Absolutely! We're continuously developing new certification programs for additional
-                  sports roles and specializations. Stay tuned for updates.
                 </p>
               </div>
             </div>

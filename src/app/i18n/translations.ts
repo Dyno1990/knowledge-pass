@@ -119,9 +119,6 @@ export const translations = {
     contactTitle: 'Contact Us',
     contactIntro: "Have questions about our certification programs? We're here to help! Reach out to us through any of the methods below.",
     email: 'Email',
-    phone: 'Phone',
-    address: 'Address',
-    phoneHours: 'Mon-Fri, 9AM-5PM EST',
     sendMessage: 'Send Us a Message',
     yourName: 'Your Name',
     emailAddress: 'Email Address',
@@ -136,8 +133,6 @@ export const translations = {
     faq2A: 'Our certifications are designed for professional development and educational purposes. They demonstrate your knowledge and commitment to sports professionalism.',
     faq3Q: 'Can I retake a certification?',
     faq3A: 'Yes! You can retake any certification program at any time to refresh your knowledge or improve your understanding.',
-    faq4Q: 'Will you add more certification programs?',
-    faq4A: "Absolutely! We're continuously developing new certification programs for additional sports roles and specializations. Stay tuned for updates.",
 
     // Module Names
     sportsCoach: 'Sports Coach',
@@ -272,9 +267,6 @@ export const translations = {
     contactTitle: 'Свържете се с Нас',
     contactIntro: 'Имате въпроси относно нашите сертификационни програми? Тук сме, за да помогнем! Свържете се с нас чрез някой от методите по-долу.',
     email: 'Имейл',
-    phone: 'Телефон',
-    address: 'Адрес',
-    phoneHours: 'Пон-Пет, 9:00-17:00',
     sendMessage: 'Изпратете ни Съобщение',
     yourName: 'Вашето Име',
     emailAddress: 'Имейл Адрес',
@@ -289,8 +281,6 @@ export const translations = {
     faq2A: 'Нашите сертификати са предназначени за професионално развитие и образователни цели. Те демонстрират вашите знания и ангажираност към спортния професионализъм.',
     faq3Q: 'Мога ли да преповторя сертификат?',
     faq3A: 'Да! Можете да преповторите всяка сертификационна програма по всяко време, за да освежите знанията си или да подобрите разбирането си.',
-    faq4Q: 'Ще добавяте ли още сертификационни програми?',
-    faq4A: 'Абсолютно! Непрекъснато разработваме нови сертификационни програми за допълнителни спортни роли и специализации. Следете за актуализации.',
 
     // Module Names
     sportsCoach: 'Спортен Треньор',
