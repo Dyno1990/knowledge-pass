@@ -8,7 +8,7 @@ import { useTranslation } from "../hooks/useTranslation";
 export default function CertificatePage() {
   const { moduleId } = useParams();
   const location = useLocation();
-  const { language, t } = useTranslation();
+  const { language } = useTranslation();
   const module = modules.find((m) => m.id === moduleId);
   const certificate = (location.state || {}) as {
     name?: string;
@@ -16,6 +16,7 @@ export default function CertificatePage() {
     downloadUrl?: string;
     emailSent?: boolean;
     certificateId?: string;
+    issuedAt?: string;
   };
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function CertificatePage() {
     );
   }
 
-  const currentDate = new Date().toLocaleDateString(language === "bg" ? "bg-BG" : "en-US", {
+  const issuedDate = new Date(certificate.issuedAt || Date.now()).toLocaleDateString(language === "bg" ? "bg-BG" : "en-GB", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -88,7 +89,7 @@ export default function CertificatePage() {
               </div>
               <p className="text-sm font-bold tracking-[0.25em] text-blue-800 mb-3">WTSB DIGITAL MODULES</p>
               <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">
-                {t("certificateOfAchievement")}
+                {language === "bg" ? "Сертификат за завършване" : "Certificate of Completion"}
               </h2>
               <div className="w-24 h-1 bg-blue-500 mx-auto" />
             </div>
@@ -105,16 +106,14 @@ export default function CertificatePage() {
               <p className="text-lg text-gray-600">{language === "bg" ? "Сертификационна програма" : "Certification Program"}</p>
             </div>
 
-            <div className="flex justify-center items-center gap-12 mb-8">
+            <div className="flex flex-wrap justify-center items-center gap-12 mb-8">
               <div className="text-center">
                 <p className="text-sm text-gray-500 mb-2">{language === "bg" ? "Дата на завършване" : "Date of Completion"}</p>
-                <p className="text-lg font-semibold text-gray-900">{currentDate}</p>
+                <p className="text-lg font-semibold text-gray-900">{issuedDate}</p>
               </div>
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">{t("questionsCompleted")}</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {module.questions.length}/{module.questions.length}
-                </p>
+                <p className="text-sm text-gray-500 mb-2">{language === "bg" ? "Номер на сертификат" : "Certificate ID"}</p>
+                <p className="text-lg font-semibold text-gray-900">{certificate.certificateId || "—"}</p>
               </div>
             </div>
 

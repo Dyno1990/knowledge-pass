@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { quizzes, quizCount, totalQuestionCount, getQuizById } from '../src/config/quizzes/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const certificateTemplatePath = path.join(__dirname, 'assets', 'certificate-template.png');
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
@@ -95,45 +96,29 @@ function drawAthleticsWatermarks(doc, W, H) {
   doc.restore().opacity(1);
 }
 
-function createCertificate({ name, language, score, total, id, assessment }) {
-  const t = copy[language] || copy.en;
+function createCertificate({ name, language, id, assessment, issuedAt }) {
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 0, info: { Title: `WTSB Digital Modules Certificate — ${name}`, Author: 'WTSB Digital Modules' } });
+    const doc = new PDFDocument({ size: [842, 561.5], margin: 0, info: { Title: `WTSB Digital Modules Certificate — ${name}`, Author: 'WTSB Digital Modules' } });
     const chunks = [];
     doc.on('data', (chunk) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
-    if (fontPath) doc.registerFont('Custom', fontPath).font('Custom');
     const W = doc.page.width, H = doc.page.height;
-    doc.rect(0, 0, W, H).fill('#f8fbff');
-    drawAthleticsWatermarks(doc, W, H);
-    doc.rect(18, 18, W - 36, H - 36).lineWidth(3).stroke('#173f73');
-    doc.rect(27, 27, W - 54, H - 54).lineWidth(0.8).stroke('#60a5fa');
-    doc.rect(34, 34, W - 68, H - 68).lineWidth(0.35).stroke('#93c5fd');
-    doc.circle(W / 2, 69, 27).fill('#173f73');
-    doc.circle(W / 2, 69, 20).lineWidth(1).stroke('#ffffff');
-    doc.fillColor('#ffffff').fontSize(11).text('WTSB', W / 2 - 22, 63, { width: 44, align: 'center', characterSpacing: 1 });
-    doc.fillColor('#173f73').fontSize(13).text('WTSB DIGITAL MODULES', 0, 103, { width: W, align: 'center', characterSpacing: 2.2 });
-    doc.fillColor('#0f2e54').fontSize(43).text(t.certificate, 0, 134, { width: W, align: 'center', characterSpacing: 3 });
-    doc.fontSize(11).fillColor('#3b6b9e').text(t.achievement, 0, 186, { width: W, align: 'center', characterSpacing: 3.5 });
-    doc.moveTo(W / 2 - 88, 210).lineTo(W / 2 + 88, 210).lineWidth(1.2).stroke('#60a5fa');
-    doc.fontSize(11).fillColor('#536b83').text(t.certifies, 0, 229, { width: W, align: 'center' });
-    doc.fontSize(name.length > 34 ? 29 : 37).fillColor('#102a43').text(name, 115, 255, { width: W - 230, align: 'center' });
-    doc.moveTo(205, 304).lineTo(W - 205, 304).lineWidth(0.8).stroke('#173f73');
-    doc.fontSize(11).fillColor('#536b83').text(t.completed, 0, 322, { width: W, align: 'center' });
-    doc.fontSize(20).fillColor('#1d5c99').text(assessment || t.assessment, 105, 347, { width: W - 210, align: 'center' });
-    const date = new Intl.DateTimeFormat(language === 'bg' ? 'bg-BG' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
-    const columns = [{ label: t.issued, value: date }, { label: t.score, value: `${score}/${total}` }, { label: t.id, value: id }];
-    columns.forEach((item, i) => {
-      const x = 88 + i * 255;
-      doc.roundedRect(x, 414, 200, 57, 5).fillOpacity(0.9).fill('#ffffff').fillOpacity(1);
-      doc.roundedRect(x, 414, 200, 57, 5).lineWidth(0.6).stroke('#bfdbfe');
-      doc.fontSize(7).fillColor('#4e749c').text(item.label, x + 8, 426, { width: 184, align: 'center', characterSpacing: 1.2 });
-      doc.fontSize(10).fillColor('#153b66').text(item.value, x + 8, 446, { width: 184, align: 'center' });
-    });
-    doc.moveTo(W / 2 - 88, 506).lineTo(W / 2 + 88, 506).lineWidth(0.8).stroke('#375f88');
-    doc.fontSize(8).fillColor('#536b83').text(t.signature, W / 2 - 110, 515, { width: 220, align: 'center' });
-    doc.fontSize(8).fillColor('#3b6b9e').text('Working Together – Succeeding Better', 0, H - 48, { width: W, align: 'center', characterSpacing: 1.4 });
+    doc.image(certificateTemplatePath, 0, 0, { width: W, height: H });
+
+    const formattedDate = new Intl.DateTimeFormat(language === 'bg' ? 'bg-BG' : 'en-GB', {
+      year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+    }).format(new Date(issuedAt));
+    const recipient = name.trim().toLocaleUpperCase(language === 'bg' ? 'bg-BG' : 'en-US');
+
+    doc.font('Times-Roman').fillColor('#0b2851');
+    doc.fontSize(recipient.length > 34 ? 28 : recipient.length > 24 ? 34 : 43)
+      .text(recipient, 190, 218, { width: 462, align: 'center' });
+    doc.fontSize(assessment.length > 38 ? 20 : 24)
+      .text(assessment, 175, 333, { width: 492, align: 'center' });
+    doc.font('Helvetica').fontSize(10).fillColor('#0b2851')
+      .text(formattedDate, 206, 421, { width: 190, align: 'center' })
+      .text(id, 446, 421, { width: 190, align: 'center' });
     doc.end();
   });
 }
@@ -304,10 +289,11 @@ app.post('/api/certificates', async (req, res) => {
   const moduleTitle = quiz?.title?.[language] || sportsModule?.title?.[language];
   const assessmentTitle = `${moduleTitle} Digital Module`;
   if ((!quiz && !sportsModule) || typeof name !== 'string' || name.trim().length < 2 || name.length > 100 || typeof email !== 'string' || !/^\S+@\S+\.\S+$/.test(email) || !['en', 'bg'].includes(language) || !Number.isInteger(score) || !Number.isInteger(total) || score !== questionCount || total !== questionCount) return res.status(400).json({ message: 'Invalid certificate details.' });
-  const id = `KP-${new Date().getFullYear()}-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
+  const issuedAt = new Date().toISOString();
+  const id = `WTSB-${new Date(issuedAt).getUTCFullYear()}-${crypto.randomBytes(5).toString('hex').toUpperCase()}`;
   const filename = `${id}.pdf`;
   try {
-    const pdfBuffer = await createCertificate({ name: name.trim(), language, score, total, id, assessment: assessmentTitle });
+    const pdfBuffer = await createCertificate({ name: name.trim(), language, id, assessment: assessmentTitle, issuedAt });
     let emailSent = false;
     if (gmailOAuthConfigured()) {
       const bgTitle = quiz?.title?.bg || sportsModule.title.bg;
@@ -325,6 +311,7 @@ app.post('/api/certificates', async (req, res) => {
     }
     res.status(201).json({
       certificateId: id,
+      issuedAt,
       quizId,
       emailSent,
       filename,
