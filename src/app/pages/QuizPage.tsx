@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import * as Progress from "@radix-ui/react-progress";
-import { ArrowRight, BookOpen, CheckCircle, Clock3, LoaderCircle, RotateCcw, Target, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle, Clock3, ListChecks, LoaderCircle, RotateCcw, ShieldCheck, Target, Trophy, XCircle } from "lucide-react";
 import { localize, modules } from "../data/modules";
 import { useTranslation } from "../hooks/useTranslation";
 
@@ -11,6 +11,7 @@ export default function QuizPage() {
   const { language, t } = useTranslation();
   const module = modules.find((item) => item.id === moduleId);
   const [hasStarted, setHasStarted] = useState(false);
+  const [introStep, setIntroStep] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -51,8 +52,41 @@ export default function QuizPage() {
 
   if (!hasStarted) {
     const introCopy = language === "bg"
-      ? { objectives: "Какво ще научите", works: "Как работи модулът", before: "Преди да започнете", outcome: "Очакван резултат", start: "Започни теста", questions: "въпроса" }
-      : { objectives: "What you will learn", works: "How this module works", before: "Before you begin", outcome: "Learning outcome", start: "Start the quiz", questions: "questions" };
+      ? { objectives: "Какво ще научите", works: "Как работи модулът", before: "Преди да започнете", outcome: "Очакван резултат", next: "Напред", previous: "Назад", start: "Започни теста", questions: "въпроса", step: "Стъпка" }
+      : { objectives: "What you will learn", works: "How this module works", before: "Before you begin", outcome: "Learning Outcome", next: "Next", previous: "Previous", start: "Start the quiz", questions: "questions", step: "Step" };
+    const introPages = [
+      {
+        title: introCopy.objectives,
+        icon: Target,
+        content: <ul className="space-y-3 text-gray-700 list-disc pl-5">{module.content.learningObjectives.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>,
+      },
+      {
+        title: introCopy.works,
+        icon: ListChecks,
+        content: <ul className="space-y-3 text-gray-700 list-decimal pl-5">{module.content.howItWorks.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>,
+      },
+      {
+        title: introCopy.before,
+        icon: ShieldCheck,
+        content: <ul className="space-y-3 text-gray-700 list-disc pl-5">{module.content.beforeYouBegin.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>,
+      },
+      {
+        title: introCopy.outcome,
+        icon: Trophy,
+        content: <p className="text-lg leading-8 text-gray-700">{localize(module.content.learningOutcome, language)}</p>,
+      },
+    ];
+    const activeIntroPage = introPages[introStep];
+    const IntroIcon = activeIntroPage.icon;
+    const goForward = () => {
+      if (introStep < introPages.length - 1) {
+        setIntroStep((step) => step + 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        setHasStarted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,27 +100,31 @@ export default function QuizPage() {
                 <span className="flex items-center gap-2"><Clock3 className="w-4 h-4" />~{module.estimatedMinutes} min</span>
               </div>
             </div>
-            <div className="p-8 grid md:grid-cols-2 gap-8">
-              <section>
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-3"><Target className="w-5 h-5 text-blue-600" />{introCopy.objectives}</h2>
-                <ul className="space-y-2 text-gray-700 list-disc pl-5">{module.content.learningObjectives.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>
-              </section>
-              <section>
-                <h2 className="text-xl font-bold text-gray-900 mb-3">{introCopy.works}</h2>
-                <ul className="space-y-2 text-gray-700 list-disc pl-5">{module.content.howItWorks.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>
-              </section>
-              <section>
-                <h2 className="text-xl font-bold text-gray-900 mb-3">{introCopy.before}</h2>
-                <ul className="space-y-2 text-gray-700 list-disc pl-5">{module.content.beforeYouBegin.map((item, index) => <li key={index}>{localize(item, language)}</li>)}</ul>
-              </section>
-              <section className="bg-blue-50 rounded-xl p-5">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">{introCopy.outcome}</h2>
-                <p className="text-gray-700">{localize(module.content.learningOutcome, language)}</p>
-              </section>
+            <div className="px-8 pt-7">
+              <div className="flex items-center justify-between text-sm font-semibold text-gray-500 mb-3">
+                <span>{introCopy.step} {introStep + 1} / {introPages.length}</span>
+                <span>{activeIntroPage.title}</span>
+              </div>
+              <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                <div className="h-full transition-all duration-300" style={{ width: `${((introStep + 1) / introPages.length) * 100}%`, backgroundColor: module.color }} />
+              </div>
             </div>
-            <div className="px-8 pb-8">
-              <button type="button" onClick={() => setHasStarted(true)} className="w-full text-white py-4 px-6 rounded-lg font-bold flex items-center justify-center gap-2" style={{ backgroundColor: module.color }}>
-                {introCopy.start}<ArrowRight className="w-5 h-5" />
+            <section className="p-8 min-h-[300px]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ backgroundColor: module.color }}>
+                  <IntroIcon className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">{activeIntroPage.title}</h2>
+              </div>
+              {activeIntroPage.content}
+            </section>
+            <div className="px-8 pb-8 flex flex-col-reverse sm:flex-row gap-3 sm:justify-between">
+              <button type="button" onClick={() => setIntroStep((step) => Math.max(0, step - 1))} disabled={introStep === 0}
+                className="py-3 px-6 rounded-lg font-bold flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed">
+                <ArrowLeft className="w-5 h-5" />{introCopy.previous}
+              </button>
+              <button type="button" onClick={goForward} className="text-white py-3 px-8 rounded-lg font-bold flex items-center justify-center gap-2" style={{ backgroundColor: module.color }}>
+                {introStep === introPages.length - 1 ? introCopy.start : introCopy.next}<ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
