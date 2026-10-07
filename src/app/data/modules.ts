@@ -1,14 +1,37 @@
 import type { Language } from "../contexts/LanguageContext";
 
-export type LocalizedText = { en: string; bg?: string };
+export type LocalizedText = { en: string; bg?: string; pl?: string };
 export type AnswerLabel = "A" | "B" | "C" | "D";
 export interface Answer { id: string; label: AnswerLabel; text: LocalizedText; isCorrect: boolean; }
 export interface Question { id: string; number: number; title: LocalizedText; scenario: LocalizedText; answers: Answer[]; multipleCorrect: boolean; explanation: LocalizedText; keyMessage: LocalizedText; }
 export interface ModuleContent { introduction: LocalizedText; learningObjectives: LocalizedText[]; howItWorks: LocalizedText[]; beforeYouBegin: LocalizedText[]; learningOutcome: LocalizedText; }
 export interface Module { id: string; order: number; title: LocalizedText; description: LocalizedText; icon: string; color: string; estimatedMinutes: number; content: ModuleContent; questions: Question[]; }
 
+const polishCommonContent: Record<string, string> = {
+  "Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.": "Witamy w module edukacyjnym platformy e-learningowej Working Together – Succeeding Better (WTSB). Każdy moduł opracowano tak, aby wspierał Twoją rolę w społeczności lekkoatletycznej i pomagał stosować zasady dobrego zarządzania, praw człowieka i uczciwości oraz zrównoważonego rozwoju w codziennych działaniach. Niezależnie od tego, czy jesteś sportowcem, trenerem, sędzią, wolontariuszem czy administratorem, Twoje działania wpływają na jakość, bezpieczeństwo i uczciwość sportu. Nawet drobne decyzje mogą znacząco oddziaływać na doświadczenia sportowców, współpracowników, wolontariuszy i całej społeczności. Moduł łączy praktyczną wiedzę z rzeczywistymi sytuacjami i zachęca do krytycznego myślenia, etycznych decyzji oraz stosowania dobrych praktyk.",
+  "understand your responsibilities within your role": "zrozumieć obowiązki związane ze swoją rolą",
+  "recognise situations that may involve ethical or governance challenges": "rozpoznawać sytuacje związane z wyzwaniami etycznymi lub zarządczymi",
+  "promote fairness, respect and inclusion": "promować sprawiedliwość, szacunek i włączenie społeczne",
+  "contribute to a safe sporting environment": "współtworzyć bezpieczne środowisko sportowe",
+  "understand how your daily decisions support the long-term development of athletics": "rozumieć, jak codzienne decyzje wspierają długofalowy rozwój lekkoatletyki",
+  "identify good practices that strengthen trust, transparency and cooperation within sports organisations.": "rozpoznawać dobre praktyki wzmacniające zaufanie, przejrzystość i współpracę w organizacjach sportowych.",
+  "Read the scenario carefully.": "Uważnie przeczytaj opis sytuacji.",
+  "Select the answer you believe is most appropriate.": "Wybierz odpowiedź, którą uważasz za najbardziej właściwą.",
+  "After submitting your answer, you will receive a detailed explanation of the correct response.": "Po zatwierdzeniu odpowiedzi otrzymasz szczegółowe wyjaśnienie prawidłowego rozwiązania.",
+  "Even if your answer is incorrect, the explanation will help you understand the reasoning behind the best practice and how it applies in real-life situations.": "Jeśli odpowiesz niepoprawnie, wyjaśnienie pomoże Ci zrozumieć uzasadnienie dobrej praktyki i jej zastosowanie w rzeczywistych sytuacjach.",
+  "Integrity – Always act honestly, ethically and transparently.": "Uczciwość – zawsze działaj rzetelnie, etycznie i przejrzyście.",
+  "Respect – Treat every individual with dignity and fairness.": "Szacunek – traktuj każdą osobę z godnością i sprawiedliwie.",
+  "Inclusion – Ensure that everyone has equal opportunities to participate.": "Włączenie społeczne – zapewniaj wszystkim równe możliwości uczestnictwa.",
+  "Responsibility – Understand that your decisions affect others.": "Odpowiedzialność – pamiętaj, że Twoje decyzje wpływają na innych.",
+  "Sustainability – Contribute to the long-term success of athletics through responsible practices.": "Zrównoważony rozwój – wspieraj długoterminowy rozwój lekkoatletyki poprzez odpowiedzialne praktyki.",
+  "After successfully completing this module, you will have a better understanding of how your individual role contributes to building stronger, safer, more inclusive and more sustainable athletics organisations across Europe.": "Po pomyślnym ukończeniu modułu lepiej zrozumiesz, w jaki sposób Twoja rola pomaga budować silniejsze, bezpieczniejsze, bardziej inkluzywne i zrównoważone organizacje lekkoatletyczne w Europie.",
+};
+
 export function localize(value: LocalizedText, language: Language): string {
-  return language === "bg" && value.bg?.trim() ? value.bg : value.en;
+  const localized = value[language];
+  if (localized?.trim()) return localized;
+  if (language === "pl") return polishCommonContent[value.en] || value.en;
+  return value.en;
 }
 
 // Content source: CONTENT WTSB MODULE.docx
@@ -16,8 +39,8 @@ export function localize(value: LocalizedText, language: Language): string {
 export const modules: Module[] = [
   {
     id: "athlete", order: 1,
-    title: { en: "e-Athlete", bg: "" },
-    description: { en: "Helping athletes understand their rights, responsibilities and role in creating a fair and respectful sporting environment.", bg: "Помага на атлетите да разберат своите права, отговорности и ролята си в създаването на справедлива и основана на взаимно уважение спортна среда." },
+    title: { en: "e-Athlete", bg: "", pl: "e-Athlete" },
+    description: { en: "Helping athletes understand their rights, responsibilities and role in creating a fair and respectful sporting environment.", bg: "Помага на атлетите да разберат своите права, отговорности и ролята си в създаването на справедлива и основана на взаимно уважение спортна среда.", pl: "Pomaga sportowcom zrozumieć ich prawa, obowiązki i rolę w tworzeniu sprawiedliwego środowiska sportowego opartego na wzajemnym szacunku." },
     icon: "Dumbbell", color: "#3b82f6", estimatedMinutes: 20,
     content: {
       introduction: { en: "Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.", bg: "" },
@@ -189,8 +212,8 @@ export const modules: Module[] = [
   },
   {
     id: "coach", order: 2,
-    title: { en: "e-Coach", bg: "" },
-    description: { en: "Supporting coaches in promoting ethical leadership, athlete welfare, safeguarding and inclusive coaching practices.", bg: "Подпомага треньорите да насърчават етичното лидерство, благосъстоянието и защитата на атлетите, както и приобщаващите треньорски практики." },
+    title: { en: "e-Coach", bg: "", pl: "e-Coach" },
+    description: { en: "Supporting coaches in promoting ethical leadership, athlete welfare, safeguarding and inclusive coaching practices.", bg: "Подпомага треньорите да насърчават етичното лидерство, благосъстоянието и защитата на атлетите, както и приобщаващите треньорски практики.", pl: "Wspiera trenerów w promowaniu etycznego przywództwa, dobrostanu i ochrony sportowców oraz inkluzywnych praktyk trenerskich." },
     icon: "ClipboardCheck", color: "#22c55e", estimatedMinutes: 20,
     content: {
       introduction: { en: "Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.", bg: "" },
@@ -362,8 +385,8 @@ export const modules: Module[] = [
   },
   {
     id: "referee", order: 3,
-    title: { en: "e-Referee", bg: "" },
-    description: { en: "Providing referees with guidance on impartiality, integrity, fair decision-making and professional conduct.", bg: "Предоставя на съдиите насоки за безпристрастност, почтеност, справедливо вземане на решения и професионално поведение." },
+    title: { en: "e-Referee", bg: "", pl: "e-Referee" },
+    description: { en: "Providing referees with guidance on impartiality, integrity, fair decision-making and professional conduct.", bg: "Предоставя на съдиите насоки за безпристрастност, почтеност, справедливо вземане на решения и професионално поведение.", pl: "Przekazuje sędziom wskazówki dotyczące bezstronności, uczciwości, sprawiedliwego podejmowania decyzji i profesjonalnego postępowania." },
     icon: "Flag", color: "#ef4444", estimatedMinutes: 20,
     content: {
       introduction: { en: "Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.", bg: "" },
@@ -535,8 +558,8 @@ export const modules: Module[] = [
   },
   {
     id: "volunteer", order: 4,
-    title: { en: "e-Volunteer", bg: "" },
-    description: { en: "Preparing volunteers to contribute to safe, welcoming and sustainable athletics events.", bg: "Подготвя доброволците да допринасят за безопасни, гостоприемни и устойчиви събития по лека атлетика." },
+    title: { en: "e-Volunteer", bg: "", pl: "e-Volunteer" },
+    description: { en: "Preparing volunteers to contribute to safe, welcoming and sustainable athletics events.", bg: "Подготвя доброволците да допринасят за безопасни, гостоприемни и устойчиви събития по лека атлетика.", pl: "Przygotowuje wolontariuszy do współtworzenia bezpiecznych, przyjaznych i zrównoważonych wydarzeń lekkoatletycznych." },
     icon: "Heart", color: "#a855f7", estimatedMinutes: 20,
     content: {
       introduction: { en: "The e-Volunteer module aims to educate volunteers on their vital role in creating safe, inclusive, respectful and sustainable athletics events. Volunteers are often the first people athletes, spectators and visitors interact with, making them ambassadors of the sport and of the federation's values. Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.", bg: "" },
@@ -708,8 +731,8 @@ export const modules: Module[] = [
   },
   {
     id: "administrator", order: 5,
-    title: { en: "e-Administrator", bg: "" },
-    description: { en: "Supporting federation staff and administrators in strengthening governance, transparency and organisational excellence.", bg: "Подпомага служителите и администраторите на федерациите да укрепват управлението, прозрачността и организационното съвършенство." },
+    title: { en: "e-Administrator", bg: "", pl: "e-Administrator" },
+    description: { en: "Supporting federation staff and administrators in strengthening governance, transparency and organisational excellence.", bg: "Подпомага служителите и администраторите на федерациите да укрепват управлението, прозрачността и организационното съвършенство.", pl: "Wspiera pracowników i administratorów federacji we wzmacnianiu dobrego zarządzania, przejrzystości i doskonałości organizacyjnej." },
     icon: "BarChart3", color: "#f97316", estimatedMinutes: 20,
     content: {
       introduction: { en: "The e-Administrator module is designed for federation staff, administrators, CEOs, General Secretaries and office personnel responsible for the day-to-day management of athletics organisations. Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.", bg: "" },

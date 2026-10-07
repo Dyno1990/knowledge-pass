@@ -20,6 +20,7 @@ export default function Header() {
   const languages: { code: Language; name: string; flag: string }[] = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
     { code: 'bg', name: 'Български', flag: '🇧🇬' },
+    { code: 'pl', name: 'Polski', flag: '🇵🇱' },
   ];
 
   useEffect(() => {

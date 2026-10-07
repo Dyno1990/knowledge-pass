@@ -1,4 +1,5 @@
 import { FileText } from "lucide-react";
+import { useTranslation } from "../hooks/useTranslation";
 
 const sections = [
   {
@@ -27,18 +28,29 @@ const sections = [
   },
 ];
 
+const polishSections = [
+  { title: "1. Cel i zakres", content: "Cyfrowe moduły edukacyjne zostały opracowane przy wsparciu finansowym Komisji Europejskiej. Ich głównym celem jest realizacja założeń projektu „Working Together – Succeeding Better”, skoncentrowanego na ponadnarodowej współpracy edukacyjnej wszystkich istotnych grup interesariuszy lekkoatletyki." },
+  { title: "2. Dozwolone wykorzystanie", content: "Wykorzystanie treści — w całości lub w części — jest ściśle ograniczone do działań bezpośrednio przyczyniających się do realizacji celów projektu. Każde inne wykorzystanie, w tym komercyjne, adaptacja, powielanie, rozpowszechnianie lub tworzenie utworów zależnych, jest zabronione bez wyraźnej pisemnej zgody Koordynatora Projektu." },
+  { title: "3. Własność intelektualna i oznaczenie autorstwa", content: "Wszystkie materiały, w tym treści tekstowe, grafiki, koncepcje i struktura modułów, pozostają własnością intelektualną Konsorcjum Projektu. Przy każdym dozwolonym wykorzystaniu należy zachować właściwe oznaczenie projektu oraz informację o wsparciu Komisji Europejskiej." },
+  { title: "4. Nieuprawnione wykorzystanie i odpowiedzialność", content: "Każde nieuprawnione wykorzystanie treści, koncepcji lub modułu — częściowe albo pełne — bez wyraźnej zgody Konsorcjum Projektu może skutkować pociągnięciem użytkownika do odpowiedzialności przed Komisją Europejską i innymi właściwymi organami. Dotyczy to również wprowadzania w błąd, niewłaściwego użycia i ponownego rozpowszechniania." },
+  { title: "5. Zmiany i aktualizacje", content: "Konsorcjum Projektu zastrzega sobie prawo do zmiany lub aktualizacji modułów i warunków ich użytkowania w dowolnym czasie bez wcześniejszego powiadomienia. Przed skorzystaniem z platformy użytkownik powinien zapoznać się z najnowszą wersją Regulaminu." },
+  { title: "6. Wyłączenie odpowiedzialności", content: "Dołożono wszelkich starań, aby zapewnić dokładność i aktualność treści, jednak Konsorcjum Projektu nie ponosi odpowiedzialności za błędy, pominięcia ani interpretacje osób trzecich. Użytkownik odpowiada za zgodność sposobu wykorzystania modułu z obowiązującym prawem i zasadami krajowymi oraz międzynarodowymi." },
+];
+
 export default function TermsPage() {
+  const { language, t } = useTranslation();
+  const visibleSections = language === "pl" ? polishSections : sections;
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="flex items-center gap-3 mb-8">
             <FileText className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Terms & Conditions</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t("termsTitle")}</h1>
           </div>
 
           <div className="prose max-w-none">
-            {sections.map((section) => (
+            {visibleSections.map((section) => (
               <section key={section.title} className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">{section.title}</h2>
                 <p className="text-gray-700 leading-7">{section.content}</p>
@@ -47,7 +59,7 @@ export default function TermsPage() {
 
             <div className="mt-10 border-l-4 border-blue-600 bg-blue-50 rounded-r-lg p-6">
               <p className="text-gray-800 leading-7 font-medium">
-                Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them.
+                {language === "pl" ? "Projekt finansowany przez Unię Europejską. Wyrażone poglądy i opinie należą jednak wyłącznie do autora lub autorów i nie muszą odzwierciedlać stanowiska Unii Europejskiej ani Europejskiej Agencji Wykonawczej ds. Edukacji i Kultury (EACEA). Unia Europejska ani EACEA nie ponoszą za nie odpowiedzialności." : "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them."}
               </p>
             </div>
           </div>

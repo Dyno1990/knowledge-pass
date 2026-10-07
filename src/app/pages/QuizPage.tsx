@@ -40,6 +40,14 @@ export default function QuizPage() {
     formTitle: "Издаване на сертификат", formText: "Въведете името за сертификата и имейла, на който да бъде изпратен.",
     name: "Име и фамилия", email: "Имейл адрес", create: "Създай сертификат",
     invalid: "Моля, въведете валидни име и имейл.", failed: "Сертификатът не можа да бъде създаден. Опитайте отново.",
+  } : language === "pl" ? {
+    remaining: "Pozostało", selectAll: "Zaznacz wszystkie poprawne odpowiedzi",
+    notQuite: "Niezupełnie", review: "Zapoznaj się z wyjaśnieniem i spróbuj ponownie.",
+    explanation: "Szczegółowe wyjaśnienie:", guidance: "Najważniejsza wskazówka:", next: "Następne pytanie",
+    certificate: "Przejdź do certyfikatu", tryAgain: "Spróbuj ponownie",
+    formTitle: "Wystaw certyfikat", formText: "Wpisz imię i nazwisko, które znajdzie się na certyfikacie, oraz adres e-mail, na który ma zostać wysłany.",
+    name: "Imię i nazwisko", email: "Adres e-mail", create: "Utwórz certyfikat",
+    invalid: "Wpisz prawidłowe imię i nazwisko oraz adres e-mail.", failed: "Nie udało się utworzyć certyfikatu. Spróbuj ponownie.",
   } : {
     remaining: "Remaining", selectAll: "Select all answers that apply",
     notQuite: "Not Quite", review: "Review the explanation and try again.",
@@ -53,7 +61,9 @@ export default function QuizPage() {
   if (!hasStarted) {
     const introCopy = language === "bg"
       ? { objectives: "Какво ще научите", works: "Как работи модулът", before: "Преди да започнете", outcome: "Очакван резултат", next: "Напред", previous: "Назад", start: "Започни теста", questions: "въпроса", step: "Стъпка" }
-      : { objectives: "What you will learn", works: "How this module works", before: "Before you begin", outcome: "Learning Outcome", next: "Next", previous: "Previous", start: "Start the quiz", questions: "questions", step: "Step" };
+      : language === "pl"
+        ? { objectives: "Czego się nauczysz", works: "Jak działa moduł", before: "Zanim zaczniesz", outcome: "Efekty uczenia się", next: "Dalej", previous: "Wstecz", start: "Rozpocznij quiz", questions: "pytań", step: "Krok" }
+        : { objectives: "What you will learn", works: "How this module works", before: "Before you begin", outcome: "Learning Outcome", next: "Next", previous: "Previous", start: "Start the quiz", questions: "questions", step: "Step" };
     const introPages = [
       {
         title: introCopy.objectives,
@@ -92,7 +102,7 @@ export default function QuizPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="p-8 text-white" style={{ backgroundColor: module.color }}>
-              <p className="font-semibold mb-2 opacity-90">{language === "bg" ? "Обучителен модул" : "Learning module"} {module.order}</p>
+              <p className="font-semibold mb-2 opacity-90">{language === "bg" ? "Обучителен модул" : language === "pl" ? "Moduł edukacyjny" : "Learning module"} {module.order}</p>
               <h1 className="text-4xl font-extrabold mb-4">{localize(module.title, language)}</h1>
               <p className="text-lg opacity-95">{localize(module.content.introduction, language)}</p>
               <div className="flex gap-5 mt-6 text-sm font-medium">
