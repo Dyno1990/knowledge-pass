@@ -21,6 +21,7 @@ export default function Header() {
     { code: 'en', name: 'English', flag: '🇬🇧' },
     { code: 'bg', name: 'Български', flag: '🇧🇬' },
     { code: 'pl', name: 'Polski', flag: '🇵🇱' },
+    { code: 'de', name: 'Deutsch', flag: '🇦🇹' },
   ];
 
   useEffect(() => {

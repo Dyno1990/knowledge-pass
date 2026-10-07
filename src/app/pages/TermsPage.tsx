@@ -37,9 +37,18 @@ const polishSections = [
   { title: "6. Wyłączenie odpowiedzialności", content: "Dołożono wszelkich starań, aby zapewnić dokładność i aktualność treści, jednak Konsorcjum Projektu nie ponosi odpowiedzialności za błędy, pominięcia ani interpretacje osób trzecich. Użytkownik odpowiada za zgodność sposobu wykorzystania modułu z obowiązującym prawem i zasadami krajowymi oraz międzynarodowymi." },
 ];
 
+const germanSections = [
+  { title: "1. Zweck und Geltungsbereich", content: "Diese digitalen Bildungsmodule wurden mit finanzieller Unterstützung der Europäischen Kommission entwickelt. Ihr Hauptzweck ist die Unterstützung der Ziele des Projekts „Working Together – Succeeding Better“, das sich auf die länderübergreifende Bildungszusammenarbeit aller relevanten Interessengruppen der Leichtathletik konzentriert." },
+  { title: "2. Zulässige Nutzung", content: "Die Nutzung der Inhalte – vollständig oder auszugsweise – ist ausschließlich für Tätigkeiten zulässig, die unmittelbar zur Verwirklichung der Projektziele beitragen. Jede andere Nutzung, einschließlich kommerzieller Verwertung, Bearbeitung, Vervielfältigung, Verbreitung oder Erstellung abgeleiteter Werke, ist ohne ausdrückliche schriftliche Genehmigung der Projektkoordination untersagt." },
+  { title: "3. Geistiges Eigentum und Quellenangabe", content: "Alle Materialien, einschließlich Texte, Grafiken, Konzepte und Modulstruktur, bleiben geistiges Eigentum des Projektkonsortiums. Bei jeder zulässigen Nutzung müssen das Projekt ordnungsgemäß genannt und die Unterstützung der Europäischen Kommission anerkannt werden." },
+  { title: "4. Unbefugte Nutzung und Haftung", content: "Jede unbefugte Nutzung der Inhalte, des Konzepts oder eines Moduls – teilweise oder vollständig – ohne ausdrückliche Zustimmung des Projektkonsortiums kann eine Verantwortlichkeit gegenüber der Europäischen Kommission und anderen zuständigen Stellen begründen. Dies gilt auch für irreführende Darstellung, missbräuchliche Nutzung und Weiterverbreitung." },
+  { title: "5. Änderungen und Aktualisierungen", content: "Das Projektkonsortium behält sich das Recht vor, die Module und ihre Nutzungsbedingungen jederzeit ohne vorherige Ankündigung zu ändern oder zu aktualisieren. Nutzer:innen sollten vor der Nutzung die jeweils aktuelle Fassung dieser Bedingungen prüfen." },
+  { title: "6. Haftungsausschluss", content: "Obwohl alle Anstrengungen unternommen wurden, um Richtigkeit und Relevanz der Inhalte sicherzustellen, übernimmt das Projektkonsortium keine Haftung für Fehler, Auslassungen oder Auslegungen durch Dritte. Nutzer:innen sind selbst dafür verantwortlich, dass ihre Nutzung des Moduls den geltenden nationalen und internationalen Rechtsvorschriften und Richtlinien entspricht." },
+];
+
 export default function TermsPage() {
   const { language, t } = useTranslation();
-  const visibleSections = language === "pl" ? polishSections : sections;
+  const visibleSections = language === "pl" ? polishSections : language === "de" ? germanSections : sections;
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,7 +68,7 @@ export default function TermsPage() {
 
             <div className="mt-10 border-l-4 border-blue-600 bg-blue-50 rounded-r-lg p-6">
               <p className="text-gray-800 leading-7 font-medium">
-                {language === "pl" ? "Projekt finansowany przez Unię Europejską. Wyrażone poglądy i opinie należą jednak wyłącznie do autora lub autorów i nie muszą odzwierciedlać stanowiska Unii Europejskiej ani Europejskiej Agencji Wykonawczej ds. Edukacji i Kultury (EACEA). Unia Europejska ani EACEA nie ponoszą za nie odpowiedzialności." : "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them."}
+                {language === "pl" ? "Projekt finansowany przez Unię Europejską. Wyrażone poglądy i opinie należą jednak wyłącznie do autora lub autorów i nie muszą odzwierciedlać stanowiska Unii Europejskiej ani Europejskiej Agencji Wykonawczej ds. Edukacji i Kultury (EACEA). Unia Europejska ani EACEA nie ponoszą za nie odpowiedzialności." : language === "de" ? "Von der Europäischen Union finanziert. Die geäußerten Ansichten und Meinungen entsprechen jedoch ausschließlich jenen der Autor:innen und spiegeln nicht unbedingt die Position der Europäischen Union oder der Europäischen Exekutivagentur für Bildung und Kultur (EACEA) wider. Weder die Europäische Union noch die EACEA können dafür verantwortlich gemacht werden." : "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them."}
               </p>
             </div>
           </div>
