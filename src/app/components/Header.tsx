@@ -22,6 +22,7 @@ export default function Header() {
     { code: 'bg', name: 'Български', flag: '🇧🇬' },
     { code: 'pl', name: 'Polski', flag: '🇵🇱' },
     { code: 'de', name: 'Deutsch', flag: '🇦🇹' },
+    { code: 'bs', name: 'Bosanski', flag: '🇧🇦' },
   ];
 
   useEffect(() => {

@@ -46,9 +46,18 @@ const germanSections = [
   { title: "6. Haftungsausschluss", content: "Obwohl alle Anstrengungen unternommen wurden, um Richtigkeit und Relevanz der Inhalte sicherzustellen, übernimmt das Projektkonsortium keine Haftung für Fehler, Auslassungen oder Auslegungen durch Dritte. Nutzer:innen sind selbst dafür verantwortlich, dass ihre Nutzung des Moduls den geltenden nationalen und internationalen Rechtsvorschriften und Richtlinien entspricht." },
 ];
 
+const bosnianSections = [
+  { title: "1. Svrha i obim", content: "Ovi digitalni obrazovni moduli razvijeni su uz finansijsku podršku Evropske komisije. Njihova glavna svrha je podrška ciljevima projekta „Working Together – Succeeding Better“, usmjerenog na transnacionalnu saradnju u obrazovanju svih relevantnih učesnika u atletici." },
+  { title: "2. Dozvoljena upotreba", content: "Korištenje sadržaja – u cijelosti ili djelimično – strogo je ograničeno na aktivnosti koje direktno doprinose ostvarivanju ciljeva projekta. Svaka druga upotreba, uključujući komercijalno iskorištavanje, prilagođavanje, umnožavanje, distribuciju ili izradu izvedenih djela, zabranjena je bez izričitog pisanog odobrenja koordinatora projekta." },
+  { title: "3. Intelektualno vlasništvo i navođenje izvora", content: "Svi materijali, uključujući tekstualni sadržaj, grafike, koncepte i strukturu modula, ostaju intelektualno vlasništvo projektnog konzorcija. U svakoj dozvoljenoj upotrebi moraju se pravilno navesti projekat i podrška Evropske komisije." },
+  { title: "4. Neovlaštena upotreba i odgovornost", content: "Svaka neovlaštena upotreba sadržaja, koncepta ili modula – djelimična ili potpuna – bez izričite saglasnosti projektnog konzorcija može dovesti do odgovornosti korisnika pred Evropskom komisijom i drugim nadležnim tijelima. To uključuje lažno predstavljanje, zloupotrebu i ponovnu distribuciju." },
+  { title: "5. Izmjene i ažuriranja", content: "Projektni konzorcij zadržava pravo da u bilo kojem trenutku i bez prethodne obavijesti izmijeni ili ažurira module i njihove uslove korištenja. Korisnicima se preporučuje da prije korištenja provjere najnoviju verziju ovih uslova." },
+  { title: "6. Odricanje od odgovornosti", content: "Iako je uložen svaki napor da sadržaj bude tačan i relevantan, projektni konzorcij ne preuzima odgovornost za greške, propuste ili tumačenja trećih strana. Korisnici su odgovorni da korištenje modula bude usklađeno s važećim domaćim i međunarodnim zakonima i pravilima." },
+];
+
 export default function TermsPage() {
   const { language, t } = useTranslation();
-  const visibleSections = language === "pl" ? polishSections : language === "de" ? germanSections : sections;
+  const visibleSections = language === "pl" ? polishSections : language === "de" ? germanSections : language === "bs" ? bosnianSections : sections;
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +77,7 @@ export default function TermsPage() {
 
             <div className="mt-10 border-l-4 border-blue-600 bg-blue-50 rounded-r-lg p-6">
               <p className="text-gray-800 leading-7 font-medium">
-                {language === "pl" ? "Projekt finansowany przez Unię Europejską. Wyrażone poglądy i opinie należą jednak wyłącznie do autora lub autorów i nie muszą odzwierciedlać stanowiska Unii Europejskiej ani Europejskiej Agencji Wykonawczej ds. Edukacji i Kultury (EACEA). Unia Europejska ani EACEA nie ponoszą za nie odpowiedzialności." : language === "de" ? "Von der Europäischen Union finanziert. Die geäußerten Ansichten und Meinungen entsprechen jedoch ausschließlich jenen der Autor:innen und spiegeln nicht unbedingt die Position der Europäischen Union oder der Europäischen Exekutivagentur für Bildung und Kultur (EACEA) wider. Weder die Europäische Union noch die EACEA können dafür verantwortlich gemacht werden." : "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them."}
+                {language === "pl" ? "Projekt finansowany przez Unię Europejską. Wyrażone poglądy i opinie należą jednak wyłącznie do autora lub autorów i nie muszą odzwierciedlać stanowiska Unii Europejskiej ani Europejskiej Agencji Wykonawczej ds. Edukacji i Kultury (EACEA). Unia Europejska ani EACEA nie ponoszą za nie odpowiedzialności." : language === "de" ? "Von der Europäischen Union finanziert. Die geäußerten Ansichten und Meinungen entsprechen jedoch ausschließlich jenen der Autor:innen und spiegeln nicht unbedingt die Position der Europäischen Union oder der Europäischen Exekutivagentur für Bildung und Kultur (EACEA) wider. Weder die Europäische Union noch die EACEA können dafür verantwortlich gemacht werden." : language === "bs" ? "Finansira Evropska unija. Izneseni stavovi i mišljenja pripadaju isključivo autoru ili autorima i ne odražavaju nužno stavove Evropske unije ili Evropske izvršne agencije za obrazovanje i kulturu (EACEA). Evropska unija ni EACEA ne mogu se smatrati odgovornima za njih." : "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them."}
               </p>
             </div>
           </div>
