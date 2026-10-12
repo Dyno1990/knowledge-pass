@@ -67,7 +67,7 @@ export default function ContactsPage() {
                   type="text"
                   id="subject"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={language === "pl" ? "Pytanie dotyczące programu edukacyjnego" : language === "de" ? "Anfrage zum Bildungsprogramm" : language === "bs" ? "Upit o obrazovnom programu" : language === "bg" ? "Запитване относно сертификационна програма" : "Inquiry about certification program"}
+                  placeholder={language === "pl" ? "Pytanie dotyczące programu edukacyjnego" : language === "de" ? "Anfrage zum Bildungsprogramm" : language === "bs" ? "Upit o obrazovnom programu" : language === "sq" ? "Pyetje rreth programit arsimor" : language === "bg" ? "Запитване относно сертификационна програма" : "Inquiry about certification program"}
                 />
               </div>
 

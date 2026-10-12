@@ -23,6 +23,7 @@ export default function Header() {
     { code: 'pl', name: 'Polski', flag: '🇵🇱' },
     { code: 'de', name: 'Deutsch', flag: '🇦🇹' },
     { code: 'bs', name: 'Bosanski', flag: '🇧🇦' },
+    { code: 'sq', name: 'Shqip', flag: '🇦🇱' },
   ];
 
   useEffect(() => {

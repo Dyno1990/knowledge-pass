@@ -1,6 +1,6 @@
 import type { Language } from "../contexts/LanguageContext";
 
-export type LocalizedText = { en: string; bg?: string; pl?: string; de?: string; bs?: string };
+export type LocalizedText = { en: string; bg?: string; pl?: string; de?: string; bs?: string; sq?: string };
 export type AnswerLabel = "A" | "B" | "C" | "D";
 export interface Answer { id: string; label: AnswerLabel; text: LocalizedText; isCorrect: boolean; }
 export interface Question { id: string; number: number; title: LocalizedText; scenario: LocalizedText; answers: Answer[]; multipleCorrect: boolean; explanation: LocalizedText; keyMessage: LocalizedText; }
@@ -67,12 +67,38 @@ const bosnianCommonContent: Record<string, string> = {
   "After successfully completing this module, you will have a better understanding of how your individual role contributes to building stronger, safer, more inclusive and more sustainable athletics organisations across Europe.": "Nakon uspješnog završetka modula bolje ćete razumjeti kako vaša uloga doprinosi izgradnji snažnijih, sigurnijih, inkluzivnijih i održivijih atletskih organizacija širom Evrope.",
 };
 
+const albanianCommonContent: Record<string, string> = {
+  "Welcome to this learning module of the Working Together – Succeeding Better (WTSB) e-Learning Platform. Each module has been specifically designed to support your role within the athletics community and to help you apply the principles of Good Governance, Human Rights & Integrity, and Sustainability in your everyday activities. Regardless of whether you are an athlete, coach, referee, volunteer or administrator, your actions influence the quality, safety and integrity of our sport. Even small decisions can have a significant impact on the experience of athletes, colleagues, volunteers and the wider athletics community. This module combines practical knowledge with real-life situations that you may encounter in your role. Rather than testing memorised facts, it encourages you to think critically, make ethical decisions and apply best practices in realistic scenarios.": "Mirë se vini në këtë modul arsimor të platformës e-learning Working Together – Succeeding Better (WTSB). Çdo modul është krijuar për të mbështetur rolin tuaj në komunitetin e atletikës dhe për t’ju ndihmuar të zbatoni në veprimtarinë e përditshme parimet e qeverisjes së mirë, të drejtave të njeriut dhe integritetit, si dhe të qëndrueshmërisë. Pavarësisht nëse jeni atlet, trajner, gjyqtar, vullnetar apo administrator, veprimet tuaja ndikojnë në cilësinë, sigurinë dhe integritetin e sportit tonë. Edhe vendimet e vogla mund të kenë ndikim të rëndësishëm. Moduli ndërthur njohuritë praktike me situata reale dhe nxit mendimin kritik, vendimmarrjen etike dhe zbatimin e praktikave të mira.",
+  "understand your responsibilities within your role": "të kuptoni përgjegjësitë brenda rolit tuaj",
+  "recognise situations that may involve ethical or governance challenges": "të dalloni situatat që përfshijnë sfida etike ose të qeverisjes",
+  "promote fairness, respect and inclusion": "të promovoni drejtësinë, respektin dhe përfshirjen",
+  "contribute to a safe sporting environment": "të kontribuoni në një mjedis sportiv të sigurt",
+  "understand how your daily decisions support the long-term development of athletics": "të kuptoni si vendimet e përditshme mbështesin zhvillimin afatgjatë të atletikës",
+  "identify good practices that strengthen trust, transparency and cooperation within sports organisations.": "të identifikoni praktikat e mira që forcojnë besimin, transparencën dhe bashkëpunimin në organizatat sportive.",
+  "Read the scenario carefully.": "Lexoni me kujdes situatën.",
+  "Select the answer you believe is most appropriate.": "Zgjidhni përgjigjen që mendoni se është më e përshtatshme.",
+  "After submitting your answer, you will receive a detailed explanation of the correct response.": "Pas dërgimit të përgjigjes do të merrni një shpjegim të hollësishëm të përgjigjes së saktë.",
+  "Even if your answer is incorrect, the explanation will help you understand the reasoning behind the best practice and how it applies in real-life situations.": "Nëse përgjigjja është e pasaktë, shpjegimi do t’ju ndihmojë të kuptoni praktikën më të mirë dhe zbatimin e saj në situata reale.",
+  "Integrity – Always act honestly, ethically and transparently.": "Integriteti – veproni gjithmonë me ndershmëri, etikë dhe transparencë.",
+  "Respect – Treat every individual with dignity and fairness.": "Respekti – trajtojeni çdo person me dinjitet dhe drejtësi.",
+  "Inclusion – Ensure that everyone has equal opportunities to participate.": "Përfshirja – siguroni mundësi të barabarta pjesëmarrjeje për të gjithë.",
+  "Responsibility – Understand that your decisions affect others.": "Përgjegjësia – kuptoni se vendimet tuaja ndikojnë te të tjerët.",
+  "Sustainability – Contribute to the long-term success of athletics through responsible practices.": "Qëndrueshmëria – kontribuoni në suksesin afatgjatë të atletikës përmes praktikave të përgjegjshme.",
+  "After successfully completing this module, you will have a better understanding of how your individual role contributes to building stronger, safer, more inclusive and more sustainable athletics organisations across Europe.": "Pas përfundimit me sukses të modulit do të kuptoni më mirë se si roli juaj kontribuon në ndërtimin e organizatave të atletikës më të forta, më të sigurta, më përfshirëse dhe më të qëndrueshme në Evropë.",
+  "Helping athletes understand their rights, responsibilities and role in creating a fair and respectful sporting environment.": "Ndihmon atletët të kuptojnë të drejtat, përgjegjësitë dhe rolin e tyre në krijimin e një mjedisi sportiv të drejtë dhe me respekt të ndërsjellë.",
+  "Supporting coaches in promoting ethical leadership, athlete welfare, safeguarding and inclusive coaching practices.": "Mbështet trajnerët në promovimin e udhëheqjes etike, mirëqenies dhe mbrojtjes së atletëve, si dhe praktikave përfshirëse të stërvitjes.",
+  "Providing referees with guidance on impartiality, integrity, fair decision-making and professional conduct.": "U ofron gjyqtarëve udhëzime për paanshmërinë, integritetin, vendimmarrjen e drejtë dhe sjelljen profesionale.",
+  "Preparing volunteers to contribute to safe, welcoming and sustainable athletics events.": "Përgatit vullnetarët për të kontribuar në veprimtari atletike të sigurta, mikpritëse dhe të qëndrueshme.",
+  "Supporting federation staff and administrators in strengthening governance, transparency and organisational excellence.": "Mbështet stafin dhe administratorët e federatave në forcimin e qeverisjes, transparencës dhe përsosmërisë organizative.",
+};
+
 export function localize(value: LocalizedText, language: Language): string {
   const localized = value[language];
   if (localized?.trim()) return localized;
   if (language === "pl") return polishCommonContent[value.en] || value.en;
   if (language === "de") return germanCommonContent[value.en] || value.en;
   if (language === "bs") return bosnianCommonContent[value.en] || value.en;
+  if (language === "sq") return albanianCommonContent[value.en] || value.en;
   return value.en;
 }
 
